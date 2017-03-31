@@ -24,6 +24,7 @@ class TicTacToe extends React.Component {
 
   handleSquareClick(rowNum, squareNum) {
     return e => {
+      if (this.state.winner) { return; }
       const newBoard = this.state.board;
       newBoard[rowNum][squareNum] = this.state.currentMark;
       this.checkForWin(newBoard, this.state.currentMark);
