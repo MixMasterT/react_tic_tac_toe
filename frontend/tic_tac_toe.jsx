@@ -6,31 +6,57 @@ class TicTacToe extends React.Component {
   constructor(props) {
     super(props);
 
-    const gameBoard = [
+    this._defaultGameBoard = [
       [' ', ' ', ' '],
       [' ', ' ', ' '],
       [' ', ' ', ' ']
     ];
 
     this.state = {
-      board: gameBoard,
+      board: this._defaultGameBoard,
+      gameHistory: [],
       currentMark: 'X',
       winner: null
     }
 
     this.handleSquareClick = this.handleSquareClick.bind(this);
     this.checkForWin = this.checkForWin.bind(this);
+    this.revertMove = this.revertMove.bind(this);
+    this.updateCurrentMark = this.updateCurrentMark.bind(this);
   }
 
   handleSquareClick(rowNum, squareNum) {
     return e => {
       if (this.state.winner) { return; }
-      const newBoard = this.state.board;
+      const newBoard = [];
+      // this forEach with .slice() business is necessary for deep duplicate
+      // otherwise the board is passed by reference
+      this.state.board.forEach((row) => newBoard.push(row.slice()));
       newBoard[rowNum][squareNum] = this.state.currentMark;
       this.checkForWin(newBoard, this.state.currentMark);
       this.setState({ board: newBoard,
-                      currentMark: this.state.currentMark === 'X' ? 'O' : 'X'});
+                      gameHistory: this.state.gameHistory.concat([newBoard])});
+      this.updateCurrentMark();
     }
+  }
+
+  updateCurrentMark() {
+    this.setState({ currentMark: this.state.currentMark === 'X' ? 'O' : 'X' })
+  }
+
+  revertMove(e) {
+    e.preventDefault();
+    if (this.state.gameHistory.length === 0) { return; }
+    let { gameHistory } = this.state;
+    gameHistory.pop();
+    const board = gameHistory.length > 0 ?
+      gameHistory[gameHistory.length - 1] :
+      this._defaultGameBoard;
+    // console.log('game history is ', gameHistory);
+    // console.log(('board is ', board));
+    this.setState({ board, gameHistory });
+    this.checkForWin(board, this.state.currentMark);
+    this.updateCurrentMark();
   }
 
   checkForWin(board, mark) {
@@ -58,11 +84,11 @@ class TicTacToe extends React.Component {
         winner = mark;
       }
     });
-    if (winner != null) { this.setState({winner}) };
+    this.setState({ winner });
   }
 
   render() {
-    console.log(this.state.winner);
+    // console.log(this.state.gameHistory);
     return (
       <div className='game'>
         <h3>Tic Tac Toe</h3>
@@ -73,6 +99,7 @@ class TicTacToe extends React.Component {
       <h3>{this.state.winner ?
           `${this.state.winner} wins!`:
           `Now it's ${this.state.currentMark}'s turn...`}</h3>
+        <button onClick={this.revertMove}>undo move</button>
       </div>
     )
   }
