@@ -33,47 +33,35 @@ class TicTacToe extends React.Component {
   }
 
   checkForWin(board, mark) {
-    console.log("win check ran");
-    console.log("mark is ", mark);
-    console.log("board = ", board);
     let winner = null;
-    //check rows
-    board.forEach((row) => {
+
+    let rows = [];
+    let leftDiagonal = [];
+    let rightDiagonal = [];
+
+    for (let i = 0; i < 3; i++) {
+      let newRow = [];
+       let newColumn = [];
+      for (let j = 0; j < 3; j++) {
+        newRow.push(board[i][j]);
+        newColumn.push(board[j][i])
+      }
+      rows.push(newRow, newColumn);
+      leftDiagonal.push(board[i][i]);
+      rightDiagonal.push(board[i][2 - i]);
+    }
+    rows.push(leftDiagonal, rightDiagonal);
+
+    rows.forEach((row) => {
       if (row.every((val) => val === mark)) {
         winner = mark;
       }
     });
-    //check columns
-    if (winner === null) {
-      for (let i = 0; i < 3; i++) {
-        if (board.every((row) => row[i] === mark)) {
-          winner = mark;
-        }
-      }
-    }
-    //check diagonals
-    if (winner === null) {
-      for (let j = 0; j < 3; j++) {
-        if (board[j][j] != mark) {
-          break;
-        }
-        winner = mark;
-      }
-    }
-    //check diagonals
-    if (winner === null) {
-      for (let k = 0; k < 3; k++) {
-        if (board[k][2 - k] != mark) {
-          break;
-        }
-        winner = mark;
-      }
-    }
-    console.log(winner);
     if (winner != null) { this.setState({winner}) };
   }
 
   render() {
+    console.log(this.state.winner);
     return (
       <div className='game'>
         <h3>Tic Tac Toe</h3>
@@ -81,6 +69,9 @@ class TicTacToe extends React.Component {
           rows={this.state.board}
           handleSquareClick={this.handleSquareClick}
         />
+      <h3>{this.state.winner ?
+          `${this.state.winner} wins!`:
+          `Now it's ${this.state.currentMark}'s turn...`}</h3>
       </div>
     )
   }
