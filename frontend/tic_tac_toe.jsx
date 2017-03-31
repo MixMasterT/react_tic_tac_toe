@@ -52,8 +52,7 @@ class TicTacToe extends React.Component {
     const board = gameHistory.length > 0 ?
       gameHistory[gameHistory.length - 1] :
       this._defaultGameBoard;
-    // console.log('game history is ', gameHistory);
-    // console.log(('board is ', board));
+      
     this.setState({ board, gameHistory });
     this.checkForWin(board, this.state.currentMark);
     this.updateCurrentMark();
@@ -88,7 +87,6 @@ class TicTacToe extends React.Component {
   }
 
   render() {
-    // console.log(this.state.gameHistory);
     return (
       <div className='game'>
         <h3>Tic Tac Toe</h3>
@@ -103,7 +101,6 @@ class TicTacToe extends React.Component {
       </div>
     )
   }
-
 }
 
 export default TicTacToe;
