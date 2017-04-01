@@ -8,6 +8,7 @@ class Root extends React.Component {
   render() {
     return(
       <div>
+        <h3>WTF?</h3>
         <TicTacToe />
       </div>
     );
@@ -15,5 +16,5 @@ class Root extends React.Component {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(<Root/>, document.getElementById('main'));
+  ReactDOM.render(<Root />, document.getElementById('main'));
 });

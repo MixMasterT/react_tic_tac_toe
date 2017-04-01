@@ -2,6 +2,14 @@ import React from 'react';
 
 import Board from './board';
 
+import AITicTacToePlayer from '../js/ai_tic_tac_toe_player.js';
+import TicTacToeModule from '../js/tic_tac_toe_module.js';
+// console.log(TicTacToeModule.checkForWin([
+//   ['X', 'X', 'X'],
+//   [' ', 'O', 'O'],
+//   ['X', 'O', 'O']
+// ], 'X'));
+
 class TicTacToe extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +19,9 @@ class TicTacToe extends React.Component {
       [' ', ' ', ' '],
       [' ', ' ', ' ']
     ];
+
+
+    this.aiPlayer = new AITicTacToePlayer('O');
 
     this.state = {
       board: this._defaultGameBoard,
@@ -23,6 +34,11 @@ class TicTacToe extends React.Component {
     this.checkForWin = this.checkForWin.bind(this);
     this.revertMove = this.revertMove.bind(this);
     this.updateCurrentMark = this.updateCurrentMark.bind(this);
+  }
+
+  componentDidMount() {
+    console.log("test", this.aiPlayer.mark);
+    console.log("WTF?");
   }
 
   handleSquareClick(rowNum, squareNum) {
@@ -52,44 +68,22 @@ class TicTacToe extends React.Component {
     const board = gameHistory.length > 0 ?
       gameHistory[gameHistory.length - 1] :
       this._defaultGameBoard;
-      
+
     this.setState({ board, gameHistory });
     this.checkForWin(board, this.state.currentMark);
     this.updateCurrentMark();
   }
 
   checkForWin(board, mark) {
-    let winner = null;
-
-    let rows = [];
-    let leftDiagonal = [];
-    let rightDiagonal = [];
-
-    for (let i = 0; i < 3; i++) {
-      let newRow = [];
-       let newColumn = [];
-      for (let j = 0; j < 3; j++) {
-        newRow.push(board[i][j]);
-        newColumn.push(board[j][i])
-      }
-      rows.push(newRow, newColumn);
-      leftDiagonal.push(board[i][i]);
-      rightDiagonal.push(board[i][2 - i]);
-    }
-    rows.push(leftDiagonal, rightDiagonal);
-
-    rows.forEach((row) => {
-      if (row.every((val) => val === mark)) {
-        winner = mark;
-      }
-    });
+    const winner = TicTacToeModule.checkForWin(board, mark);
     this.setState({ winner });
   }
 
   render() {
     return (
       <div className='game'>
-        <h3>Tic Tac Toe</h3>
+        <h1>WTF?</h1>
+        <h3 className='title'>Tic Tac Toe</h3>
         <Board
           rows={this.state.board}
           handleSquareClick={this.handleSquareClick}
