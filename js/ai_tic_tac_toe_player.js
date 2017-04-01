@@ -15,7 +15,7 @@ class AITicTacToePlayer {
     if (emptySquares.length === 0) { return; }
 
     for (let i = 0; i < emptySquares.length; i++) {
-      const newBoard = this.putMarkOnSquare(boardState, emptySquares[i], this.mark);
+      const newBoard = TicTacToeModule.putMarkOnSquare(boardState, emptySquares[i], this.mark);
       const outcomeTree = this.buildOutcomeTree(newBoard, this.mark, this.oppositeMark);
 
       // console.log(outcomeTree);
@@ -26,7 +26,7 @@ class AITicTacToePlayer {
     }
     // console.log("no win found");
     for (let i = 0; i < emptySquares.length; i++) {
-      const newBoard = this.putMarkOnSquare(boardState, emptySquares[i], this.mark);
+      const newBoard = TicTacToeModule.putMarkOnSquare(boardState, emptySquares[i], this.mark);
       const outcomeTree = this.buildOutcomeTree(newBoard, this.mark, this.oppositeMark);
 
       // console.log("on square ", emptySquares[i]);
@@ -83,17 +83,13 @@ class AITicTacToePlayer {
     return root;
   }
 
-  putMarkOnSquare(board, square, mark) {
-    let newBoard = TicTacToeModule.copyBoard(board);
-    newBoard[square[0]][square[1]] = mark;
-    return newBoard;
-  }
+
 
   getNextBoardStates(mark, board) {
     const emptySquares = TicTacToeModule.getEmptySquares(board);
     const newBoards = [];
     emptySquares.forEach((emptySquare) => {
-      let newBoard = this.putMarkOnSquare(board, emptySquare, mark);
+      let newBoard = TicTacToeModule.putMarkOnSquare(board, emptySquare, mark);
       newBoards.push(newBoard);
     });
     return newBoards;

@@ -28,13 +28,15 @@ class TicTacToe extends React.Component {
       gameHistory: [],
       currentMark: 'X',
       winner: null,
-      isDraw: false
+      isDraw: false,
+      numPlayers: 2
     }
 
     this.handleSquareClick = this.handleSquareClick.bind(this);
     this.checkForWin = this.checkForWin.bind(this);
     this.revertMove = this.revertMove.bind(this);
     this.updateCurrentMark = this.updateCurrentMark.bind(this);
+    this.handleNumPlayerReset = this.handleNumPlayerReset.bind(this);
   }
 
   handleSquareClick(rowNum, squareNum) {
@@ -48,6 +50,11 @@ class TicTacToe extends React.Component {
       this.setState({ board: newBoard,
                       gameHistory: this.state.gameHistory.concat([newBoard])});
       this.updateCurrentMark();
+
+      if (this.aiPlayer) {
+        const nextMove = this.aiPlayer.getMove(this.state.board);
+        console.log(nextMove);
+      }
     }
   }
 
@@ -79,10 +86,36 @@ class TicTacToe extends React.Component {
     this.setState({ winner, isDraw });
   }
 
+  handleNumPlayerReset(e) {
+    if (e.target.value === '1') {
+      // console.log('AI player being set');
+      this.aiPlayer = new AITicTacToePlayer('O');
+    } else {
+      this.aiPlayer = null;
+    }
+    this.setState({ numPlayers: e.target.value })
+    if (this.aiPlayer) {
+      // console.log(this.aiPlayer.mark);
+    }
+  }
+
   render() {
     return (
       <div className='game'>
         <h3 className='title'>Tic Tac Toe</h3>
+        <h5>Select number of players:
+          <select
+            onChange={this.handleNumPlayerReset}
+            defaultValue={2}
+          >
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+          </select>
+        </h5>
+        <h6>Current game is {this.state.numPlayers} player{
+            this.state.numPlayers < 2 ? '' : 's'}
+          </h6>
+
         <Board
           rows={this.state.board}
           handleSquareClick={this.handleSquareClick}
