@@ -4,11 +4,6 @@ import Board from './board';
 
 import AITicTacToePlayer from '../js/ai_tic_tac_toe_player.js';
 import TicTacToeModule from '../js/tic_tac_toe_module.js';
-// console.log(TicTacToeModule.checkForWin([
-//   ['X', 'X', 'X'],
-//   [' ', 'O', 'O'],
-//   ['X', 'O', 'O']
-// ], 'X'));
 
 class TicTacToe extends React.Component {
   constructor(props) {
@@ -20,8 +15,15 @@ class TicTacToe extends React.Component {
       [' ', ' ', ' ']
     ];
 
-
     this.aiPlayer = new AITicTacToePlayer('O');
+
+    let testTree = this.aiPlayer.getMove([
+      ['X', ' ', ' '],
+      ['O', 'X', 'X'],
+      ['X', ' ', 'O']
+    ], 'O', 'X');
+
+    console.log(testTree);
 
     this.state = {
       board: this._defaultGameBoard,

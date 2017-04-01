@@ -33,9 +33,22 @@ const TicTacToeModule = (() => {
     return newBoard;
   }
 
+  const getEmptySquares = (board) => {
+    let emptySquares = [];
+    board.forEach((row, rowIdx) => {
+      row.forEach((square, squareIdx) => {
+        if (square === ' ') {
+          emptySquares.push([rowIdx, squareIdx]);
+        }
+      })
+    });
+    return emptySquares;
+  }
+
   return {
     checkForWin,
-    copyBoard
+    copyBoard,
+    getEmptySquares
   }
 })();
 
