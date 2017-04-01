@@ -36,19 +36,13 @@ class TicTacToe extends React.Component {
     this.updateCurrentMark = this.updateCurrentMark.bind(this);
   }
 
-  componentDidMount() {
-    console.log("test", this.aiPlayer.mark);
-    console.log("WTF?");
-  }
-
   handleSquareClick(rowNum, squareNum) {
     return e => {
       if (this.state.winner) { return; }
-      const newBoard = [];
-      // this forEach with .slice() business is necessary for deep duplicate
-      // otherwise the board is passed by reference
-      this.state.board.forEach((row) => newBoard.push(row.slice()));
+
+      let newBoard = TicTacToeModule.copyBoard(this.state.board);
       newBoard[rowNum][squareNum] = this.state.currentMark;
+
       this.checkForWin(newBoard, this.state.currentMark);
       this.setState({ board: newBoard,
                       gameHistory: this.state.gameHistory.concat([newBoard])});
@@ -82,7 +76,6 @@ class TicTacToe extends React.Component {
   render() {
     return (
       <div className='game'>
-        <h1>WTF?</h1>
         <h3 className='title'>Tic Tac Toe</h3>
         <Board
           rows={this.state.board}

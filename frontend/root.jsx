@@ -8,7 +8,6 @@ class Root extends React.Component {
   render() {
     return(
       <div>
-        <h3>WTF?</h3>
         <TicTacToe />
       </div>
     );
