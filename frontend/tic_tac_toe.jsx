@@ -15,21 +15,20 @@ class TicTacToe extends React.Component {
       [' ', ' ', ' ']
     ];
 
-    this.aiPlayer = new AITicTacToePlayer('O');
-
-    let testTree = this.aiPlayer.getMove([
-      ['X', ' ', ' '],
-      ['O', 'X', 'X'],
-      ['X', ' ', 'O']
-    ], 'O', 'X');
-
-    console.log(testTree);
+    // let testTree = this.aiPlayer.getMove([
+    //   ['X', ' ', ' '],
+    //   ['O', 'X', 'X'],
+    //   ['X', ' ', 'O']
+    // ], 'O', 'X');
+    //
+    // console.log(testTree);
 
     this.state = {
       board: this._defaultGameBoard,
       gameHistory: [],
       currentMark: 'X',
-      winner: null
+      winner: null,
+      isDraw: false
     }
 
     this.handleSquareClick = this.handleSquareClick.bind(this);
@@ -40,7 +39,7 @@ class TicTacToe extends React.Component {
 
   handleSquareClick(rowNum, squareNum) {
     return e => {
-      if (this.state.winner) { return; }
+      if (this.state.winner || this.state.isDraw) { return; }
 
       let newBoard = TicTacToeModule.copyBoard(this.state.board);
       newBoard[rowNum][squareNum] = this.state.currentMark;
@@ -71,8 +70,13 @@ class TicTacToe extends React.Component {
   }
 
   checkForWin(board, mark) {
-    const winner = TicTacToeModule.checkForWin(board, mark);
-    this.setState({ winner });
+    let winner = TicTacToeModule.checkForWin(board, mark);
+    let isDraw = false;
+    if (TicTacToeModule.getEmptySquares(board).length === 0 &&
+        winner === null) {
+      isDraw = true;
+    }
+    this.setState({ winner, isDraw });
   }
 
   render() {
@@ -83,7 +87,9 @@ class TicTacToe extends React.Component {
           rows={this.state.board}
           handleSquareClick={this.handleSquareClick}
         />
-      <h3>{this.state.winner ?
+      <h3>{this.state.isDraw ?
+          'The game is a draw.' :
+          this.state.winner ?
           `${this.state.winner} wins!`:
           `Now it's ${this.state.currentMark}'s turn...`}</h3>
         <button onClick={this.revertMove}>undo move</button>
