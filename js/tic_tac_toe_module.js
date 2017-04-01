@@ -46,7 +46,7 @@ const TicTacToeModule = (() => {
   }
 
   const putMarkOnSquare = (board, square, mark) => {
-    let newBoard = TicTacToeModule.copyBoard(board);
+    let newBoard = copyBoard(board);
     newBoard[square[0]][square[1]] = mark;
     return newBoard;
   }

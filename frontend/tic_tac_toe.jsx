@@ -37,23 +37,43 @@ class TicTacToe extends React.Component {
     this.revertMove = this.revertMove.bind(this);
     this.updateCurrentMark = this.updateCurrentMark.bind(this);
     this.handleNumPlayerReset = this.handleNumPlayerReset.bind(this);
+    this.makeMove = this.makeMove.bind(this);
+  }
+
+  makeMove(pos) {
+    if (this.state.winner || this.state.isDraw) { return; }
+
+    if (this.state.board[pos[0]][pos[1]] !== ' ') { alert('Square already occupied')}
+    else {
+
+      let newBoard = TicTacToeModule.putMarkOnSquare(this.state.board,
+                                                     pos,
+                                                     this.state.currentMark);
+
+        this.checkForWin(newBoard, this.state.currentMark);
+        this.setState({ board: newBoard,
+          gameHistory: this.state.gameHistory.concat([newBoard])});
+          this.updateCurrentMark();
+    }
   }
 
   handleSquareClick(rowNum, squareNum) {
     return e => {
-      if (this.state.winner || this.state.isDraw) { return; }
-
-      let newBoard = TicTacToeModule.copyBoard(this.state.board);
-      newBoard[rowNum][squareNum] = this.state.currentMark;
-
-      this.checkForWin(newBoard, this.state.currentMark);
-      this.setState({ board: newBoard,
-                      gameHistory: this.state.gameHistory.concat([newBoard])});
-      this.updateCurrentMark();
+      this.makeMove([rowNum, squareNum]);
+      // if (this.state.winner || this.state.isDraw) { return; }
+      //
+      // let newBoard = TicTacToeModule.putMarkOnSquare(this.state.board,
+      //                                                [rowNum, squareNum],
+      //                                                this.state.currentMark);
+      //
+      // this.checkForWin(newBoard, this.state.currentMark);
+      // this.setState({ board: newBoard,
+      //                 gameHistory: this.state.gameHistory.concat([newBoard])});
+      // this.updateCurrentMark();
 
       if (this.aiPlayer) {
         const nextMove = this.aiPlayer.getMove(this.state.board);
-        console.log(nextMove);
+        this.makeMove(nextMove);
       }
     }
   }
