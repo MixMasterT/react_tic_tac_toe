@@ -18,8 +18,6 @@ class AITicTacToePlayer {
       const newBoard = TicTacToeModule.putMarkOnSquare(boardState, emptySquares[i], this.mark);
       const outcomeTree = this.buildOutcomeTree(newBoard, this.mark, this.oppositeMark);
 
-
-
       const score = this.getTreeScore(outcomeTree, 100);
 
       // console.log('for move: ', emptySquares[i]);
@@ -67,8 +65,6 @@ class AITicTacToePlayer {
     })
     return root;
   }
-
-
 
   getNextBoardStates(mark, board) {
     const emptySquares = TicTacToeModule.getEmptySquares(board);
