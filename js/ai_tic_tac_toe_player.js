@@ -22,8 +22,8 @@ class AITicTacToePlayer {
 
       const score = this.getTreeScore(outcomeTree, 100);
 
-      console.log('for move: ', emptySquares[i]);
-      console.log('the score is ', score);
+      // console.log('for move: ', emptySquares[i]);
+      // console.log('the score is ', score);
 
       if (bestScore === null || score > bestScore) {
         bestMove = emptySquares[i];
@@ -52,34 +52,6 @@ class AITicTacToePlayer {
       })
     }
     return score;
-  }
-
-  treeDFSForWin(outcomeTree) {
-    if (TicTacToeModule.checkForWin(outcomeTree.value, this.mark)) {
-      return true;
-    } else if (outcomeTree.children.length === 0) {
-      return false;
-    } else {
-      let winFound;
-      for (let i = 0; i < outcomeTree.children.length; i++) {
-        winFound = this.treeDFSForWin(outcomeTree.children[i]);
-        if (winFound) { return true; }
-      }
-    }
-  }
-
-  treeDFSForLoss(outcomeTree) {
-    if (TicTacToeModule.checkForWin(outcomeTree.value, this.oppositeMark)) {
-      return true;
-    } else if (outcomeTree.children.length === 0) {
-      return false;
-    } else {
-      let lossFound;
-      for (let i = 0; i < outcomeTree.children.length; i++) {
-        lossFound = this.treeDFSForLoss(outcomeTree.children[i]);
-        if (lossFound) { return true; }
-      }
-    }
   }
 
   buildOutcomeTree(board, mark, oppositeMark) {

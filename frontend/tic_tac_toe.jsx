@@ -15,7 +15,7 @@ class TicTacToe extends React.Component {
       [' ', ' ', ' ']
     ];
 
-    // this.aiPlayer = new AITicTacToePlayer('O');
+    this.aiPlayer = new AITicTacToePlayer('O');
     //
     // let testTree = this.aiPlayer.getMove([
     //   ['O', 'O', 'X'],
@@ -33,7 +33,7 @@ class TicTacToe extends React.Component {
       currentMark: 'X',
       winner: null,
       isDraw: false,
-      numPlayers: 2
+      numPlayers: 1
     }
 
     this.handleSquareClick = this.handleSquareClick.bind(this);
@@ -118,6 +118,8 @@ class TicTacToe extends React.Component {
     }
     this.setState({ numPlayers: e.target.value,
                     board: this._defaultGameBoard,
+                    winner: null,
+                    isDraw: false,
                     gameHistory: []})
   }
 
@@ -128,7 +130,7 @@ class TicTacToe extends React.Component {
         <h5>Select number of players:
           <select
             onChange={this.handleNumPlayerReset}
-            defaultValue={2}
+            defaultValue={1}
           >
             <option value={1}>1</option>
             <option value={2}>2</option>
