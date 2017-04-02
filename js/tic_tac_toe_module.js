@@ -3,6 +3,7 @@ const TicTacToeModule = (() => {
     let winner = null;
 
     let rows = [];
+
     let leftDiagonal = [];
     let rightDiagonal = [];
 
@@ -18,7 +19,6 @@ const TicTacToeModule = (() => {
       rightDiagonal.push(board[i][2 - i]);
     }
     rows.push(leftDiagonal, rightDiagonal);
-
     rows.forEach((row) => {
       if (row.every((val) => val === mark)) {
         winner = mark;

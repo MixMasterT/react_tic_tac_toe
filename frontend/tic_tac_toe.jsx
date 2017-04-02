@@ -15,11 +15,15 @@ class TicTacToe extends React.Component {
       [' ', ' ', ' ']
     ];
 
+    // this.aiPlayer = new AITicTacToePlayer('O');
+    //
     // let testTree = this.aiPlayer.getMove([
-    //   ['X', ' ', ' '],
-    //   ['O', 'X', 'X'],
-    //   ['X', ' ', 'O']
-    // ], 'O', 'X');
+    //   ['O', 'O', 'X'],
+    //   [' ', 'X', ' '],
+    //   [' ', ' ', ' ']
+    // ]);
+    //
+    // this.aiPlayer = null;
     //
     // console.log(testTree);
 
@@ -50,31 +54,30 @@ class TicTacToe extends React.Component {
                                                      pos,
                                                      this.state.currentMark);
 
-        this.checkForWin(newBoard, this.state.currentMark);
-        this.setState({ board: newBoard,
-          gameHistory: this.state.gameHistory.concat([newBoard])});
-          this.updateCurrentMark();
+      this.checkForWin(newBoard, this.state.currentMark);
+      this.updateCurrentMark();
+      this.setState({
+        board: newBoard,
+        gameHistory: this.state.gameHistory.concat([newBoard])},
+        () => {
+          if (this.aiPlayer && !(this.state.winner || this.state.isDraw)) {
+            let move = this.aiPlayer.getMove(newBoard);
+            let newerBoard = TicTacToeModule.putMarkOnSquare(newBoard,
+                                                             move,
+                                                             this.state.currentMark);
+            this.checkForWin(newerBoard, this.state.currentMark);
+            this.updateCurrentMark();
+            this.setState({ board: newerBoard,
+                            gameHistory: this.state.gameHistory.concat([newerBoard])});
+          }
+      });
+
     }
   }
 
   handleSquareClick(rowNum, squareNum) {
     return e => {
       this.makeMove([rowNum, squareNum]);
-      // if (this.state.winner || this.state.isDraw) { return; }
-      //
-      // let newBoard = TicTacToeModule.putMarkOnSquare(this.state.board,
-      //                                                [rowNum, squareNum],
-      //                                                this.state.currentMark);
-      //
-      // this.checkForWin(newBoard, this.state.currentMark);
-      // this.setState({ board: newBoard,
-      //                 gameHistory: this.state.gameHistory.concat([newBoard])});
-      // this.updateCurrentMark();
-
-      if (this.aiPlayer) {
-        const nextMove = this.aiPlayer.getMove(this.state.board);
-        this.makeMove(nextMove);
-      }
     }
   }
 
@@ -113,10 +116,9 @@ class TicTacToe extends React.Component {
     } else {
       this.aiPlayer = null;
     }
-    this.setState({ numPlayers: e.target.value })
-    if (this.aiPlayer) {
-      // console.log(this.aiPlayer.mark);
-    }
+    this.setState({ numPlayers: e.target.value,
+                    board: this._defaultGameBoard,
+                    gameHistory: []})
   }
 
   render() {

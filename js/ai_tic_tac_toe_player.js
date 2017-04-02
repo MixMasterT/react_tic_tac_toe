@@ -7,38 +7,51 @@ class AITicTacToePlayer {
   }
 
   getMove(boardState) {
-    // let currentBoard = TicTacToeModule.copyBoard(boardState);
     const emptySquares = TicTacToeModule.getEmptySquares(boardState);
-
-    // console.log(emptySquares);
 
     if (emptySquares.length === 0) { return; }
 
+    let bestMove = emptySquares[0];
+    let bestScore = null;
+
     for (let i = 0; i < emptySquares.length; i++) {
       const newBoard = TicTacToeModule.putMarkOnSquare(boardState, emptySquares[i], this.mark);
       const outcomeTree = this.buildOutcomeTree(newBoard, this.mark, this.oppositeMark);
 
-      // console.log(outcomeTree);
 
-      if (this.treeDFSForWin(outcomeTree)) {
-        return emptySquares[i];
-      }
-    }
-    // console.log("no win found");
-    for (let i = 0; i < emptySquares.length; i++) {
-      const newBoard = TicTacToeModule.putMarkOnSquare(boardState, emptySquares[i], this.mark);
-      const outcomeTree = this.buildOutcomeTree(newBoard, this.mark, this.oppositeMark);
 
-      // console.log("on square ", emptySquares[i]);
-      // console.log(outcomeTree);
-      // console.log((this.treeDFSForLoss(outcomeTree)));
+      const score = this.getTreeScore(outcomeTree, 100);
 
-      if (this.treeDFSForLoss(outcomeTree) !== true) {
-        return emptySquares[i]
+      console.log('for move: ', emptySquares[i]);
+      console.log('the score is ', score);
+
+      if (bestScore === null || score > bestScore) {
+        bestMove = emptySquares[i];
+        bestScore = score;
       }
     }
 
-    return emptySquares[0];
+    return bestMove;
+  }
+
+  getTreeScore(outcomeTree, scoreFactor) {
+    let score = 0;
+    const winner = TicTacToeModule.checkForWin(outcomeTree.value, this.mark);
+    if (winner === this.mark) {
+      score += scoreFactor;
+    } else {
+      outcomeTree.children.forEach((child) => {
+        const childWinner = TicTacToeModule.checkForWin(child.value, this.oppositeMark);
+        if (childWinner === this.oppositeMark) {
+          score -= scoreFactor;
+        } else {
+          child.children.forEach((grandChild) => {
+            score += this.getTreeScore(grandChild, scoreFactor / 10);
+          })
+        }
+      })
+    }
+    return score;
   }
 
   treeDFSForWin(outcomeTree) {
