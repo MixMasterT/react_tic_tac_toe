@@ -27,3 +27,15 @@
   margin: 0.2em;
   border: 1px solid black;
 }
+
+button {
+  width: 18em;
+  height: 3em;
+  border-radius: 0.2em;
+  box-shadow: none;
+}
+
+button:hover {
+  background-color: #CCC;
+  cursor: pointer;
+}
