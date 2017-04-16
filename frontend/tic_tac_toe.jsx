@@ -42,6 +42,7 @@ class TicTacToe extends React.Component {
     this.updateCurrentMark = this.updateCurrentMark.bind(this);
     this.handleNumPlayerReset = this.handleNumPlayerReset.bind(this);
     this.makeMove = this.makeMove.bind(this);
+    this.resetGame = this.resetGame.bind(this);
   }
 
   makeMove(pos) {
@@ -110,24 +111,31 @@ class TicTacToe extends React.Component {
   }
 
   handleNumPlayerReset(e) {
+    e.preventDefault();
     if (e.target.value === '1') {
       // console.log('AI player being set');
       this.aiPlayer = new AITicTacToePlayer('O');
     } else {
       this.aiPlayer = null;
     }
-    this.setState({ numPlayers: e.target.value,
-                    board: this._defaultGameBoard,
-                    winner: null,
-                    isDraw: false,
-                    gameHistory: []})
+    this.resetGame();
+    this.setState({ numPlayers: e.target.value});
+  }
+
+  resetGame(e) {
+    this.setState({
+      board: this._defaultGameBoard,
+      winner: null,
+      isDraw: false,
+      gameHistory: []
+    });
   }
 
   render() {
     return (
       <div className='game'>
         <h3 className='title'>Tic Tac Toe</h3>
-        <h5>Select number of players:
+        <h4>Select number of players:
           <select
             onChange={this.handleNumPlayerReset}
             defaultValue={1}
@@ -135,10 +143,10 @@ class TicTacToe extends React.Component {
             <option value={1}>1</option>
             <option value={2}>2</option>
           </select>
-        </h5>
-        <h6>Current game is {this.state.numPlayers} player{
+        </h4>
+        <h4>Current game is {this.state.numPlayers} player{
             this.state.numPlayers < 2 ? '' : 's'}
-          </h6>
+          </h4>
 
         <Board
           rows={this.state.board}
@@ -149,7 +157,9 @@ class TicTacToe extends React.Component {
           this.state.winner ?
           `${this.state.winner} wins!`:
           `Now it's ${this.state.currentMark}'s turn...`}</h3>
-        <button onClick={this.revertMove}>undo move</button>
+        <button onClick={this.revertMove}>undo move</button><br />
+        <br />
+        <button onClick={this.resetGame}>reset game</button>
       </div>
     )
   }
