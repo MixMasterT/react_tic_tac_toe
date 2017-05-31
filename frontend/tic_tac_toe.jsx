@@ -113,7 +113,6 @@ class TicTacToe extends React.Component {
   handleNumPlayerReset(e) {
     e.preventDefault();
     if (e.target.value === '1') {
-      // console.log('AI player being set');
       const aiPlayerMark = this.state.currentMark === 'X' ? 'O' : 'X'
       this.aiPlayer = new AITicTacToePlayer(aiPlayerMark);
     } else {
