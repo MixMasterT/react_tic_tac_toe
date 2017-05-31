@@ -4,6 +4,7 @@ import Board from './board';
 
 import AITicTacToePlayer from '../js/ai_tic_tac_toe_player.js';
 import TicTacToeModule from '../js/tic_tac_toe_module.js';
+import Links from './links';
 
 class TicTacToe extends React.Component {
   constructor(props) {
@@ -113,8 +114,8 @@ class TicTacToe extends React.Component {
   handleNumPlayerReset(e) {
     e.preventDefault();
     if (e.target.value === '1') {
-      // console.log('AI player being set');
-      this.aiPlayer = new AITicTacToePlayer('O');
+      const aiPlayerMark = this.state.currentMark === 'X' ? 'O' : 'X'
+      this.aiPlayer = new AITicTacToePlayer(aiPlayerMark);
     } else {
       this.aiPlayer = null;
     }
@@ -160,6 +161,7 @@ class TicTacToe extends React.Component {
         <button onClick={this.revertMove}>undo move</button><br />
         <br />
         <button onClick={this.resetGame}>reset game</button>
+        <Links />
       </div>
     )
   }

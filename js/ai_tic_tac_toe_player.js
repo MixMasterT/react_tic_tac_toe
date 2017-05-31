@@ -20,9 +20,6 @@ class AITicTacToePlayer {
 
       const score = this.getTreeScore(outcomeTree, 100);
 
-      // console.log('for move: ', emptySquares[i]);
-      // console.log('the score is ', score);
-
       if (bestScore === null || score > bestScore) {
         bestMove = emptySquares[i];
         bestScore = score;
