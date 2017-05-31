@@ -4,6 +4,7 @@ import Board from './board';
 
 import AITicTacToePlayer from '../js/ai_tic_tac_toe_player.js';
 import TicTacToeModule from '../js/tic_tac_toe_module.js';
+import Links from './links';
 
 class TicTacToe extends React.Component {
   constructor(props) {
@@ -160,6 +161,7 @@ class TicTacToe extends React.Component {
         <button onClick={this.revertMove}>undo move</button><br />
         <br />
         <button onClick={this.resetGame}>reset game</button>
+        <Links />
       </div>
     )
   }

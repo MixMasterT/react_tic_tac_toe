@@ -39,3 +39,21 @@ button:hover {
   background-color: #CCC;
   cursor: pointer;
 }
+
+.links {
+  margin: 1em auto;
+  width: 5em;
+  display: flex;
+  justify-content: space-around;
+}
+
+.links a {
+  color: #888;
+  font-size: 1.3em;
+}
+
+.links a:hover {
+  color: #666;
+  transform: scale(1.06);
+  text-shadow: 1px 2px 8px #888;
+}
